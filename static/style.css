@@ -1,0 +1,60 @@
+body {
+    background-image: url("/static/notebook_background.jpg.avif");
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    line-height: 1.4;
+    /* Adjust line height for better readability */
+}
+
+form {
+    margin: 10px 20px;
+    /* Reduced the margin on top and bottom */
+    padding: 15px;
+    /* Reduced padding */
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+}
+
+input,
+select,
+button {
+    padding: 6px;
+    /* Slightly less padding to reduce size */
+    margin: 8px 0;
+    /* Reduced margin to bring elements closer */
+    display: block;
+    width: calc(100% - 14px);
+    /* Adjust width to account for padding and border */
+    border: 1px solid #ccc;
+    /* Lighter border color */
+    border-radius: 4px;
+}
+
+button {
+    background-color: #e6e2d3;
+    /* Sand color */
+    color: black;
+    border: 1px solid #a9a9a9;
+    /* Darker border for contrast */
+    cursor: pointer;
+    padding: 8px 12px;
+    /* Reduced padding */
+    font-size: 0.9em;
+    /* Smaller font size for the text in buttons */
+    width: auto;
+    /* Auto width to fit content */
+    display: inline-block;
+    /* Make buttons inline to avoid full width */
+}
+
+button:hover {
+    background-color: #dcd4c0;
+    /* A slightly darker shade of sand for hover effect */
+}
+
+label {
+    margin-bottom: 5px;
+    /* Reduced spacing after labels */
+    display: block;
+    /* Make labels block to match with input fields */
+}

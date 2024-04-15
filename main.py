@@ -1,12 +1,14 @@
 from flask import Flask, request, render_template, redirect, url_for
 import sqlite3
 
-app = Flask(__name__)
-DATABASE = 'tasks.db'
+app = Flask(__name__)  # Sukuria Flask aplikacijos instanciją.
+DATABASE = 'tasks.db'  # Duomenų bazės failo pavadinimas.
 
 
 def get_db_connection():
+    # Sukuria prisijungimą prie duomenų bazės.
     conn = sqlite3.connect(DATABASE)
+    # Nustato eilučių gamybos metodą, kuris leidžia naudoti stulpelių pavadinimus.
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -21,11 +23,12 @@ def create_tables():
             status TEXT NOT NULL,
             user TEXT
         );
-    ''')
-    conn.commit()
-    conn.close()
+    ''')  # Sukuria lentelę 'tasks', jei ji neegzistuoja.
+    conn.commit()  # Įvykdo užklausą.
+    conn.close()  # Uždaromas prisijungimas prie duomenų bazės.
 
 
+# Iškviečiama funkcija, kuri sukuria lentelę pradėjus aplikaciją.
 create_tables()
 
 
@@ -33,6 +36,7 @@ create_tables()
 def tasks():
     conn = get_db_connection()
     if request.method == 'POST':
+        # Gaunami duomenys iš POST užklausos ir įrašomi į duomenų bazę.
         title = request.form['title']
         description = request.form['description']
         status = request.form['status']
@@ -40,8 +44,10 @@ def tasks():
         conn.execute('INSERT INTO tasks (title, description, status, user) VALUES (?, ?, ?, ?)',
                      (title, description, status, user))
         conn.commit()
+        # Nukreipia vartotoją atgal į užduočių sąrašo puslapį.
         return redirect(url_for('tasks'))
 
+    # Gaunami visi užduočių įrašai.
     all_tasks = conn.execute('SELECT * FROM tasks').fetchall()
     conn.close()
     return render_template('tasks.html', tasks=all_tasks, task={})
@@ -51,13 +57,16 @@ def tasks():
 def modify_task(task_id):
     conn = get_db_connection()
     if request.method == 'POST':
+        # Iš formos gaunami nauji duomenys, kurie bus įrašyti į duomenų bazę.
         title = request.form['title']
         description = request.form['description']
         conn.execute('UPDATE tasks SET title = ?, description = ? WHERE id = ?',
                      (title, description, task_id))
         conn.commit()
+        # Vartotojas nukreipiamas atgal į pradinį puslapį.
         return redirect(url_for('tasks'))
 
+    # Užduotis gaunama iš duomenų bazės, kad būtų galima ją redaguoti.
     task = conn.execute('SELECT * FROM tasks WHERE id = ?',
                         (task_id,)).fetchone()
     conn.close()
@@ -68,12 +77,14 @@ def modify_task(task_id):
 def change_status(task_id):
     conn = get_db_connection()
     if request.method == 'POST':
+        # Užduoties statusas atnaujinamas duomenų bazėje.
         status = request.form['status']
         conn.execute('UPDATE tasks SET status = ? WHERE id = ?',
                      (status, task_id))
         conn.commit()
         return redirect(url_for('tasks'))
 
+    # Gaunami užduoties duomenys, kad būtų galima keisti jos statusą.
     task = conn.execute('SELECT * FROM tasks WHERE id = ?',
                         (task_id,)).fetchone()
     conn.close()
@@ -84,17 +95,21 @@ def change_status(task_id):
 def assign_user(task_id):
     conn = get_db_connection()
     if request.method == 'POST':
+        # Užduotis priskiriama vartotojui.
         user = request.form['user']
         conn.execute('UPDATE tasks SET user = ? WHERE id = ?',
                      (user, task_id))
         conn.commit()
         return redirect(url_for('tasks'))
 
+    # Gaunami užduoties duomenys, kad galėtumėte priskirti vartotoją.
     task = conn.execute('SELECT * FROM tasks WHERE id = ?',
                         (task_id,)).fetchone()
     conn.close()
     return render_template('assign_user.html', task=task)
 
 
+# Aplikacijos pradžios taškas. Jei šis failas paleidžiamas kaip pagrindinis, aplikacija bus paleista.
 if __name__ == '__main__':
+    # Debug režimas leidžia matyti klaidas naršyklėje ir automatiškai perkrauna serverį, kai atliekami pakeitimai kode.
     app.run(debug=True)
