@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Užduočių Valdymas</title>
+  </head>
+  <body>
+    <h1>Užduočių sąrašas</h1>
+    <form action="/" method="post">
+      <label for="title">Pavadinimas:</label>
+      <input type="text" id="title" name="title" required /><br /><br />
+      <label for="description">Apibūdinimas:</label>
+      <input
+        type="text"
+        id="description"
+        name="description"
+        required
+      /><br /><br />
+      <label for="status">Statusas:</label>
+      <input type="text" id="status" name="status" required /><br /><br />
+      <label for="user">Vartotojas:</label>
+      <input type="text" id="user" name="user" /><br /><br />
+      <button type="submit">Registruoti užduotį</button>
+    </form>
+
+    <h2>Esamos užduotys</h2>
+    <ul>
+      {% for task in tasks %}
+      <li>
+        ID: {{ task.id }} - {{ task.title }} - {{ task.description }} -
+        Statusas: {{ task.status }} - Atsakingas: {{ task.user }}
+        <form
+          action="{{ url_for('modify_task', task_id=task.id) }}"
+          method="get"
+        >
+          <button type="submit">Modifikuoti užduotį</button>
+        </form>
+        <form
+          action="{{ url_for('change_status', task_id=task.id) }}"
+          method="get"
+        >
+          <button type="submit">Keisti užduoties statusą</button>
+        </form>
+        <form
+          action="{{ url_for('assign_user', task_id=task.id) }}"
+          method="get"
+        >
+          <button type="submit">Priskirti vartotoją užduočiai</button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Priskirti vartotoją užduočiai</title>
+  </head>
+  <body>
+    <h1>Priskirti vartotoją užduočiai</h1>
+    <form action="{{ url_for('assign_user', task_id=task.id) }}" method="post">
+      <label for="user">Vartotojas:</label>
+      <input
+        type="text"
+        id="user"
+        name="user"
+        value="{{ task.user }}"
+        required
+      /><br /><br />
+      <button type="submit">Priskirti vartotoją</button>
+    </form>
+  </body>
+</html>

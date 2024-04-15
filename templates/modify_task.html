@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modifikuoti užduotį</title>
+  </head>
+  <body>
+    <h1>Modifikuoti užduotį</h1>
+    <form action="{{ url_for('modify_task', task_id=task.id) }}" method="post">
+      <label for="title">Naujas pavadinimas:</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        value="{{ task.title }}"
+        required
+      /><br /><br />
+      <label for="description">Naujas apibūdinimas:</label>
+      <input
+        type="text"
+        id="description"
+        name="description"
+        value="{{ task.description }}"
+        required
+      /><br /><br />
+      <button type="submit">Atnaujinti užduotį</button>
+    </form>
+  </body>
+</html>

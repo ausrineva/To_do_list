@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Keisti užduoties statusą</title>
+  </head>
+  <body>
+    <h1>Keisti užduoties statusą</h1>
+    <form
+      action="{{ url_for('change_status', task_id=task.id) }}"
+      method="post"
+    >
+      <label for="status">Naujas statusas:</label>
+      <select id="status" name="status" required>
+        <option value="New">New</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Completed">Completed</option></select
+      ><br /><br />
+      <button type="submit">Atnaujinti statusą</button>
+    </form>
+  </body>
+</html>
